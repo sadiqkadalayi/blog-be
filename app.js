@@ -13,7 +13,13 @@ const connectDB = require('./config/db');
 
 
 var app = express();
-app.use(cors());
+app.use(cors({
+  // origin:'http//localhost:3000',
+  // // origin:['http//localhost:3000','http//localhost:3001']  // ithream header check cheyyum ithil ninnu varunnathu mathrae accept cheyyoo
+  // // origin: "*"  // ithintae meaning ella header ninnum varunnathu accept cheytholoo ennanu
+  // methods:["GET","POST"],  // GET & POST nnuu varunna req mathramae accept aakoo
+  // allowedHeaders: ["Content-Type","Authorization"]
+}));
 console.log(process.env.PORT);
 
 

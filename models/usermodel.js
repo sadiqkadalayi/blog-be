@@ -4,13 +4,17 @@ const userSchema= mongoose.Schema({
     name:{
         type:String,
         required:true,
-        // default:"no Name", 
-        // trim:true  
+        default:"no Name", 
+        trim:true  
+    },
+    mob:{
+        type: String  
     },
     createdAt:{
         type:Date,
         default:new Date(),
-        immutable:true   
+        immutable:true  
+        // immutable: true  // ithu kodutha orikkalum change aakan paatillaa ithu from database 
     },
     status:{
         // type:String,
@@ -18,10 +22,11 @@ const userSchema= mongoose.Schema({
         type:Boolean,
         default:true
     },
+    
     email:{
         type:String,
         required:true,
-        // unique:true,
+        unique:true,
         //match:/^([a-zA-Z]+)@/ 
     },
     // age:{
@@ -29,9 +34,14 @@ const userSchema= mongoose.Schema({
     //     min:10,
     //     max:80
     // },
+   
     password:{
         type:String,
-        // required:true
+        required:true
+    },
+    cnfPassword:{
+        type:String,
+        required:true
     }
 })
 
