@@ -10,7 +10,6 @@ const doSignup=(req,res,next)=>{
     const saltRounds = 10;
     bcrypt.hash(req.body.password,saltRounds).then((hash)=>{
         console.log(req.body.password,hash);
-        
 
         const doc={name:req.body.name,mob:req.body.mob,email:req.body.email,password:hash,cnfPassword:req.body.cnfPassword}
          USER(doc).save().then((result)=>{
@@ -24,9 +23,7 @@ const doSignup=(req,res,next)=>{
         console.log(err);
         
     })
-
-    
-    
+ 
 }
 
 const doLogin = async (req,res,next)=>{
@@ -57,9 +54,7 @@ const doLogin = async (req,res,next)=>{
         }else{
             res.status(403).json({message:"invalid Credential"})
         }
-
-       
-        
+     
     }catch(error){
 
     }
