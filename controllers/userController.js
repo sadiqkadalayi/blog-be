@@ -4,14 +4,22 @@ const BOOKS = require('../models/books');
 const JWT = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
-const doSignup=(req,res,next)=>{
+const doSignup= async (req,res,next)=>{
     
+const existingUser = await USER.findOne({email:req.body.email})
+if(existingUser){
+    return res.status(400).json("The given email address is already in use. Try another one, please.")
+}
 
     const saltRounds = 10;
     bcrypt.hash(req.body.password,saltRounds).then((hash)=>{
         console.log(req.body.password,hash);
-
-        const doc={name:req.body.name,mob:req.body.mob,email:req.body.email,password:hash,cnfPassword:req.body.cnfPassword}
+        
+        const doc={name:req.body.name,
+                    mob:req.body.mob,
+                    email:req.body.email,
+                    password:hash,
+                    cnfPassword:req.body.cnfPassword}
          USER(doc).save().then((result)=>{
         res.status(200).json("signup Successfull")
     })

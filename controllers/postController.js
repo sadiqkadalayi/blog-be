@@ -24,7 +24,52 @@ const addImageController = (req,res,next)=>{
 }
 
 const getpostData = (req,res,next)=>{
-    POST.find().limit(100).then((result)=>{
+    let {pageNo,perpage}=req.query
+    pageNo=parseInt(pageNo);
+    perpage=parseInt(perpage);
+    const skip = (pageNo-1)*perpage
+    console.log(pageNo,perpage);
+    
+
+
+    // POST.find().limit(100).then((result)=>{
+    //     res.status(200).json(result)
+    // })
+
+    POST.aggregate([
+        {$match:{deleted:false}},
+        {$facet:{
+            totalCount:[{$count:"totalCount"}],
+            postData:[
+                {$lookup:{
+                    from:'users',
+                    localField:"createdBy",
+                    foreignField:"_id",
+                    as:"userData"
+                }},
+                {
+                    $set:{
+                        userData: {$arrayElemAt:["$userData",0]},
+                        content:{$substrBytes:["$content",0,300]}
+                    }
+                },
+                {
+                    $sort:{createdAt:1}
+                },
+                {
+                    $skip:skip
+                },
+                {
+                    $limit:perpage
+                },
+                {
+                    $project:{"userData.password":0}
+                }
+            
+            ],
+            
+        }}
+    ]).then((result)=>{
         res.status(200).json(result)
     })
 }
